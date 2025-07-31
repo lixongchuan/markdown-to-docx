@@ -1,0 +1,430 @@
+/* --- 全局样式与变量 --- */
+:root {
+    --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    --c-bg: #ffffff;
+    --c-bg-alt: #f6f8fa;
+    --c-border: #e1e4e8;
+    --c-text: #24292e;
+    --c-text-subtle: #586069;
+    --c-accent: #0366d6;
+    --c-accent-hover: #005cc5;
+    --c-code-bg: #f6f8fa;
+    --c-code-toolbar: #e1e4e8;
+    --editor-font-size: 16px;
+    --c-shadow: rgba(0, 0, 0, 0.1);
+    --c-bg-rgb: 255, 255, 255; /* V34: 新增RGB背景变量，用于RGBA透明度 */
+    --c-bg-translucent: rgba(246, 248, 250, 0.8); /* V36: 半透明背景变量 */
+}
+body.dark-mode {
+    --c-bg: #0d1117;
+    --c-bg-alt: #161b22;
+    --c-border: #30363d;
+    --c-text: #c9d1d9;
+    --c-text-subtle: #8b949e;
+    --c-accent: #58a6ff;
+    --c-accent-hover: #79b8ff;
+    --c-code-bg: #161b22;
+    --c-code-toolbar: #30363d;
+    --c-shadow: rgba(255, 255, 255, 0.1);
+    --c-bg-rgb: 13, 17, 23; /* V34: 暗模式下的RGB背景变量 */
+    --c-bg-translucent: rgba(22, 27, 34, 0.8); /* V36: 暗模式半透明背景变量 */
+}
+body {
+    font-family: var(--font-main);
+    background-color: var(--c-bg-alt);
+    color: var(--c-text);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* --- V36: 像素字体引入 */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body.pixel-mode {
+    font-family: 'Press Start 2P', cursive !important;
+    /* 像素模式下可能需要调整字体大小以获得更好的显示效果 */
+    --editor-font-size: 12px; /* 像素字体通常较小，需要调大 */
+}
+body.pixel-mode .pane,
+body.pixel-mode textarea,
+body.pixel-mode .preview-pane,
+body.pixel-mode .btn,
+body.pixel-mode .toast,
+body.pixel-mode .ad-content {
+    font-family: 'Press Start 2P', cursive !important;
+    /* 像素字体可能需要额外的行高调整 */
+    line-height: 1.5;
+}
+body.pixel-mode .logo {
+    font-size: 18px; /* 像素logo字体可能也需要调整 */
+}
+body.pixel-mode #font-size-display {
+    font-size: 11px; /* 像素模式下字体大小显示 */
+}
+body.pixel-mode .ad-content h3 {
+    font-size: 20px;
+}
+body.pixel-mode .ad-content p {
+    font-size: 14px;
+}
+body.pixel-mode .ad-content small {
+    font-size: 10px;
+}
+
+
+/* --- 顶部与底部栏 --- */
+.header {
+    padding: 6px 16px;
+    background: var(--c-bg);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 让元素分布在两端 */
+    border-bottom: 1px solid var(--c-border);
+    transition: background-color 0.3s, border-color 0.3s;
+    position: relative;
+    z-index: 10;
+}
+.logo-area, .controls { /* V37: 确保logo和controls是flex容器 */
+    display: flex;
+    align-items: center;
+}
+.logo { font-size: 20px; font-weight: 600; }
+.logo sup { font-size: 10px; opacity: 0.7; }
+.action-bar {
+    padding: 8px 16px;
+    border-top: 1px solid var(--c-border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+}
+.action-group { display: flex; align-items: center; gap: 10px; }
+
+/* --- V32: 精致的控件区域 --- */
+.controls { gap: 10px; }
+.control-group, .theme-control-group {
+    display: flex; align-items: center;
+    background-color: transparent;
+    padding: 4px; border-radius: 8px; border: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+.control-group { gap: 8px; padding: 4px 10px; }
+.control-group:hover, .theme-control-group:hover {
+    background-color: var(--c-bg-alt);
+    border-color: var(--c-border);
+}
+.control-group-icon { color: var(--c-text-subtle); margin-right: 4px; }
+.control-group-icon svg { display: block; }
+#font-size-display { font-size: 13px; color: var(--c-text-subtle); min-width: 36px; text-align: center; }
+
+/* --- 字体滑块样式 --- */
+input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100px; height: 6px; background: var(--c-border);
+    border-radius: 3px; outline: none; opacity: 0.7; transition: opacity .2s; cursor: pointer;
+}
+input[type="range"]:hover { opacity: 1; }
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 16px; height: 16px; background: var(--c-accent); border-radius: 50%; cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+    width: 16px; height: 16px; background: var(--c-accent); border-radius: 50%; cursor: pointer;
+}
+
+/* --- 主体双栏布局 --- */
+.main-container { display: flex; flex: 1; overflow: hidden; user-select: none; }
+.pane {
+    padding: 25px; overflow-y: auto; box-sizing: border-box; background: var(--c-bg);
+    transition: background-color 0.3s; height: 100%; width: 50%;
+    position: relative; /* V34: 为广告牌定位提供上下文 */
+}
+.editor-pane { user-select: text; }
+textarea#markdown-input, .preview-pane { font-size: var(--editor-font-size); }
+textarea#markdown-input {
+    width: 100%; height: 100%; border: none; resize: none; outline: none;
+    line-height: 1.7; font-family: var(--font-mono); background: transparent; color: var(--c-text);
+}
+.placeholder { color: var(--c-text-subtle); text-align: center; margin-top: 40px; font-size: 16px; user-select: none; }
+.error-msg { color: #dc3545; font-weight: bold; }
+
+/* --- 拖拽手柄样式 --- */
+#resizer {
+    width: 5px; background: var(--c-border); cursor: col-resize;
+    flex-shrink: 0; transition: background-color 0.2s;
+}
+#resizer:hover, #resizer.active { background: var(--c-accent); }
+
+/* --- 预览区与代码块样式 --- */
+.preview-pane { line-height: 1.7; user-select: text; }
+.preview-pane h1, .preview-pane h2, .preview-pane h3 { border-bottom: 1px solid var(--c-border); padding-bottom: .3em; margin-top: 24px; margin-bottom: 16px; }
+.preview-pane table { border-collapse: collapse; margin: 1em 0; display: block; overflow: auto; width: 100%; }
+.preview-pane th, .preview-pane td { border: 1px solid var(--c-border); padding: 8px 15px; }
+.preview-pane tr:nth-child(2n) { background-color: var(--c-bg-alt); }
+.preview-pane img { max-width: 100%; height: auto; border-radius: 6px; }
+.preview-pane div[class*="language-"] { position: relative; background-color: var(--c-code-bg); border: 1px solid var(--c-border); border-radius: 6px; margin: 1.5em 0; }
+.preview-pane pre { margin: 0; padding: 16px; padding-top: 45px; overflow-x: auto; }
+.code-toolbar { position: absolute; top: 0; left: 0; right: 0; height: 35px; background: var(--c-code-toolbar); border-bottom: 1px solid var(--c-border); display: flex; align-items: center; justify-content: space-between; padding: 0 10px; font-size: 12px; color: var(--c-text-subtle); border-top-left-radius: 5px; border-top-right-radius: 5px; }
+.copy-btn { background: none; border: 1px solid transparent; color: var(--c-text-subtle); cursor: pointer; padding: 4px 8px; border-radius: 4px; font-size: 12px; transition: all 0.2s; }
+.copy-btn:hover { background-color: var(--c-bg); border-color: var(--c-border); }
+.copy-btn.copied { color: #28a745; border-color: #28a745; }
+.preview-pane code { font-family: var(--font-mono); }
+
+/* --- UI 组件 --- */
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 6px 14px; font-size: 14px;
+    border: 1px solid var(--c-border); border-radius: 6px;
+    background-color: var(--c-bg-alt); cursor: pointer;
+    font-weight: 500; transition: all 0.2s ease; /* V38: 统一过渡 */
+    color: var(--c-text);
+    position: relative; /* V38: 为脉冲光环定位 */
+    overflow: hidden; /* V38: 隐藏溢出的光环 */
+}
+.btn:hover { border-color: var(--c-text-subtle); background-color: var(--c-bg); }
+.btn-primary { background-color: var(--c-accent); color: white; border-color: var(--c-accent); }
+.btn-primary:hover { background-color: var(--c-accent-hover); border-color: var(--c-accent-hover); }
+.btn-secondary {
+    background-color: var(--c-bg-alt);
+    color: var(--c-text);
+}
+.btn-secondary:hover {
+    border-color: var(--c-text-subtle);
+}
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* V38: 全新、优雅的按钮微交互 */
+/* 清空动画 - 溶解 */
+.btn.clearing {
+    opacity: 0.5;
+    transform: scale(0.98);
+}
+
+/* 下载动画 - 脉冲光环 */
+#download-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+#download-btn.loading::after {
+    animation: pulse 1.5s ease-out infinite;
+}
+#download-btn.loading {
+    color: rgba(255,255,255,0.8);
+}
+
+@keyframes pulse {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.5;
+    }
+    100% {
+        width: 200%; /* 光环扩散到按钮宽度的两倍 */
+        height: 200%;
+        opacity: 0;
+    }
+}
+
+/* V37: 恢复并优化按钮微交互 (保留V37的图标动画，与V38的光环动画结合) */
+#download-btn .btn-icon-wrapper {
+    position: relative;
+    width: 16px; height: 16px;
+}
+#download-btn .icon-default, #download-btn .icon-loading {
+    position: absolute; top: 0; left: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+#download-btn .icon-loading {
+    opacity: 0;
+}
+#download-btn.loading .icon-default {
+    opacity: 0;
+}
+#download-btn.loading .icon-loading {
+    opacity: 1;
+    animation: spin 1.2s linear infinite;
+}
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+
+/* --- V33: Toast 容器和通用样式 --- */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.toast {
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px var(--c-shadow);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.21, 1.02, 0.73, 1);
+    display: flex;
+    align-items: center;
+}
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.toast.success { background-color: #28a745; }
+.toast.error { background-color: #dc3545; }
+.toast.info { background-color: var(--c-accent); }
+
+/* V37: 登录彩蛋Toast新背景 */
+.toast.dev-joke {
+    background: #333;
+    border: 1px solid #555;
+    color: #f1f1f1;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+.toast.dev-joke::before {
+    content: '🤫'; /* 换个更神秘的表情 */
+    font-size: 24px;
+    margin-right: 12px;
+    animation: jiggle 0.6s ease-in-out infinite;
+}
+@keyframes jiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+  75% { transform: rotate(-1deg); }
+}
+
+.switch { position: relative; display: inline-block; width: 34px; height: 20px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 20px; }
+.slider:before { position: absolute; content: ""; height: 12px; width: 12px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+input:checked + .slider { background-color: var(--c-accent); }
+input:checked + .slider:before { transform: translateX(14px); }
+.theme-toggle { cursor: pointer; background: none; border: none; padding: 5px; color: var(--c-text-subtle); display:flex; align-items:center; justify-content:center; }
+.theme-toggle:hover { color: var(--c-text); }
+
+/* V36: 广告牌优化 */
+.ad-board {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--c-bg-translucent); /* 使用新变量 */
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    z-index: 100;
+}
+.ad-board.visible {
+    opacity: 1;
+    visibility: visible;
+}
+.ad-content {
+    padding: 20px;
+    border-radius: 12px;
+    background-color: var(--c-bg);
+    box-shadow: 0 8px 24px var(--c-shadow);
+    transform: scale(0.9);
+    transition: transform 0.5s ease-in-out;
+}
+.ad-board.visible .ad-content {
+    transform: scale(1);
+}
+.ad-content h3 {
+    font-size: 24px;
+    color: var(--c-accent);
+    margin-bottom: 10px;
+}
+.ad-content p {
+    font-size: 16px;
+    color: var(--c-text-subtle);
+    margin-bottom: 5px;
+}
+.ad-content small {
+    font-size: 12px;
+    opacity: 0.7;
+    color: var(--c-text-subtle);
+}
+
+/* V35: Logo 彩蛋动画 */
+.logo { cursor: pointer; transition: transform 0.3s ease; }
+.logo.thinking {
+    animation: spin-subtle 2s linear infinite;
+}
+@keyframes spin-subtle {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* V35: 主题切换彩蛋 */
+.btn.theme-glow {
+    animation: glow-effect 0.8s ease-in-out;
+}
+@keyframes glow-effect {
+  0%, 100% { box-shadow: 0 0 0 0 var(--c-accent); }
+  50% { box-shadow: 0 0 10px 5px var(--c-accent); }
+}
+
+/* V35: 诗歌彩蛋样式 */
+.poetry-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    max-width: 300px;
+    pointer-events: none; /* 确保不影响鼠标事件 */
+}
+.poetry-line {
+    background: var(--c-bg-alt);
+    color: var(--c-text-subtle);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 13px;
+    font-style: italic;
+    box-shadow: 0 2px 5px var(--c-shadow);
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fade-in-out 5s ease-in-out forwards; /* 添加 forwards 保持最终状态 */
+}
+@keyframes fade-in-out {
+  0% { opacity: 0; transform: translateY(10px); }
+  20% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+/* V37: 动态欢迎语样式 */
+.welcome-message {
+    font-size: 14px;
+    color: var(--c-text-subtle);
+    font-weight: 500;
+    position: absolute; /* 绝对定位，使其不影响布局 */
+    left: 50%;
+    transform: translateX(-50%);
+    animation: fade-in 0.5s ease-in-out;
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
