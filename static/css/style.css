@@ -113,7 +113,8 @@ body.pixel-mode .ad-content small {
     display: flex; align-items: center;
     background-color: transparent;
     padding: 4px; border-radius: 8px; border: 1px solid transparent;
-    transition: all 0.2s ease-in-out;
+    /* V38: 优化性能 - 减少动画 */
+    transition: none; /* 移除过渡效果 */
 }
 .control-group { gap: 8px; padding: 4px 10px; }
 .control-group:hover, .theme-control-group:hover {
@@ -183,7 +184,9 @@ textarea#markdown-input {
     padding: 6px 14px; font-size: 14px;
     border: 1px solid var(--c-border); border-radius: 6px;
     background-color: var(--c-bg-alt); cursor: pointer;
-    font-weight: 500; transition: all 0.2s ease; /* V38: 统一过渡 */
+    font-weight: 500; 
+    /* V38: 优化性能 - 减少动画 */
+    transition: transform 0.1s; /* 只保留必要的点击效果 */
     color: var(--c-text);
     position: relative; /* V38: 为脉冲光环定位 */
     overflow: hidden; /* V38: 隐藏溢出的光环 */
@@ -220,8 +223,9 @@ textarea#markdown-input {
     transform: translate(-50%, -50%);
     opacity: 0;
 }
+/* V38.1: 减少下载按钮动画时间 */
 #download-btn.loading::after {
-    animation: pulse 1.5s ease-out infinite;
+    animation: pulse 1s ease-out infinite; /* 从1.5秒减少到1秒 */
 }
 #download-btn.loading {
     color: rgba(255,255,255,0.8);
@@ -293,7 +297,11 @@ textarea#markdown-input {
 }
 .toast.success { background-color: #28a745; }
 .toast.error { background-color: #dc3545; }
-.toast.info { background-color: var(--c-accent); }
+/* V38: 更新Logo彩蛋Toast样式 */
+.toast.info {
+    background-color: #6f42c1; /* 紫色代替蓝色 */
+    border: 2px solid #5a32a3;
+}
 
 /* V37: 登录彩蛋Toast新背景 */
 .toast.dev-joke {
@@ -324,12 +332,12 @@ input:checked + .slider:before { transform: translateX(14px); }
 .theme-toggle { cursor: pointer; background: none; border: none; padding: 5px; color: var(--c-text-subtle); display:flex; align-items:center; justify-content:center; }
 .theme-toggle:hover { color: var(--c-text); }
 
-/* V36: 广告牌优化 */
+/* V38: 更新广告牌样式 - 更醒目 */
 .ad-board {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--c-bg-translucent); /* 使用新变量 */
-    backdrop-filter: blur(5px);
+    background: rgba(var(--c-bg-rgb), 0.92); /* 更高的不透明度 */
+    backdrop-filter: blur(8px); /* 更强的模糊效果 */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -338,46 +346,68 @@ input:checked + .slider:before { transform: translateX(14px); }
     visibility: hidden;
     transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
     z-index: 100;
+    cursor: pointer; /* 可点击关闭 */
 }
 .ad-board.visible {
     opacity: 1;
     visibility: visible;
 }
 .ad-content {
-    padding: 20px;
-    border-radius: 12px;
-    background-color: var(--c-bg);
-    box-shadow: 0 8px 24px var(--c-shadow);
+    padding: 30px;
+    border-radius: 15px;
+    background: var(--c-bg);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
     transform: scale(0.9);
     transition: transform 0.5s ease-in-out;
+    max-width: 80%;
+    width: 400px; /* 增加最大宽度 */
+    border: 1px solid var(--c-border);
 }
 .ad-board.visible .ad-content {
     transform: scale(1);
 }
 .ad-content h3 {
-    font-size: 24px;
-    color: var(--c-accent);
-    margin-bottom: 10px;
+    font-size: 28px;
+    color: #6f42c1; /* 紫色代替蓝色 */
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+}
+.ad-content h3::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 25%;
+    width: 50%;
+    height: 3px;
+    background: #6f42c1; /* 紫色代替蓝色 */
 }
 .ad-content p {
-    font-size: 16px;
-    color: var(--c-text-subtle);
-    margin-bottom: 5px;
+    font-size: 22px;
+    color: var(--c-text);
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-weight: 500;
 }
 .ad-content small {
-    font-size: 12px;
+    font-size: 14px;
     opacity: 0.7;
     color: var(--c-text-subtle);
+    display: block;
+    margin-top: 20px;
 }
 
-/* V35: Logo 彩蛋动画 */
-.logo { cursor: pointer; transition: transform 0.3s ease; }
-.logo.thinking {
-    animation: spin-subtle 2s linear infinite;
+/* V35: Logo 彩蛋动画 - 改为跳动效果 */
+.logo { 
+    cursor: pointer; 
+    transition: transform 0.3s ease; 
 }
-@keyframes spin-subtle {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.logo.thinking {
+    animation: bounce 0.5s ease infinite alternate;
+}
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-5px); }
 }
 
 /* V35: 主题切换彩蛋 */
@@ -389,26 +419,27 @@ input:checked + .slider:before { transform: translateX(14px); }
   50% { box-shadow: 0 0 10px 5px var(--c-accent); }
 }
 
-/* V35: 诗歌彩蛋样式 */
+/* V38: 优化诗歌彩蛋样式 */
 .poetry-container {
     position: absolute;
     bottom: 20px;
     right: 20px;
     max-width: 300px;
-    pointer-events: none; /* 确保不影响鼠标事件 */
+    pointer-events: none;
+    z-index: 10;
 }
 .poetry-line {
-    background: var(--c-bg-alt);
-    color: var(--c-text-subtle);
-    padding: 8px 12px;
-    border-radius: 6px;
+    background: rgba(var(--c-bg-rgb), 0.95);
+    color: var(--c-text);
+    padding: 12px 16px;
+    border-radius: 10px;
     margin-top: 10px;
-    font-size: 13px;
-    font-style: italic;
-    box-shadow: 0 2px 5px var(--c-shadow);
+    font-size: 14px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    border-left: 3px solid #6f42c1; /* 紫色代替蓝色 */
     opacity: 0;
     transform: translateY(10px);
-    animation: fade-in-out 5s ease-in-out forwards; /* 添加 forwards 保持最终状态 */
+    animation: fade-in-out 5s ease-in-out forwards;
 }
 @keyframes fade-in-out {
   0% { opacity: 0; transform: translateY(10px); }
@@ -428,3 +459,152 @@ input:checked + .slider:before { transform: translateX(14px); }
     animation: fade-in 0.5s ease-in-out;
 }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* 新的按钮点击效果 */
+.btn:active {
+    transform: scale(0.96);
+    transition: transform 0.1s;
+}
+
+/* 登录按钮特殊效果 */
+#login-btn:hover {
+    background: linear-gradient(135deg, var(--c-bg) 0%, var(--c-bg-alt) 100%);
+    border-color: var(--c-accent);
+    box-shadow: 0 0 10px rgba(var(--c-accent-rgb), 0.3);
+}
+
+/* 主题切换按钮发光效果 */
+.theme-toggle:hover {
+    transform: rotate(15deg);
+    transition: transform 0.3s ease;
+}
+
+/* 字体滑块发光效果 */
+#font-size-slider::-webkit-slider-thumb {
+    box-shadow: 0 0 5px var(--c-accent);
+}
+#font-size-slider::-moz-range-thumb {
+    box-shadow: 0 0 5px var(--c-accent);
+}
+
+/* V38: 新的登录按钮彩蛋样式 */
+.login-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: var(--c-bg);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 90%;
+    width: 400px;
+    text-align: center;
+}
+.login-modal.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+.login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    z-index: 1999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s;
+}
+.login-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+.login-modal h2 {
+    color: #6f42c1;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+.login-modal p {
+    color: var(--c-text);
+    margin-bottom: 25px;
+    font-size: 18px;
+    line-height: 1.6;
+}
+.login-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+/* V38.1: 优化登录选项效果 */
+.login-option {
+    padding: 15px;
+    background: var(--c-bg-alt);
+    border: 1px solid var(--c-border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 16px;
+}
+.login-option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-color: #6f42c1;
+}
+.login-option.selected {
+    background: rgba(111, 66, 193, 0.1);
+    border-color: #6f42c1;
+    box-shadow: 0 0 15px rgba(111, 66, 193, 0.2);
+}
+.login-modal button {
+    background: #6f42c1;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(111, 66, 193, 0.4);
+}
+.login-modal button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 7px 20px rgba(111, 66, 193, 0.6);
+}
+/* V38.1: 优化关闭按钮 */
+.login-modal .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--c-text-subtle);
+    transition: transform 0.3s;
+}
+.login-modal .close-btn:hover {
+    transform: rotate(90deg);
+    color: #6f42c1;
+}
+
+/* V38.1: 添加魔法特效 */
+.magic-effect {
+    animation: magicPulse 2s ease;
+}
+
+@keyframes magicPulse {
+    0% { box-shadow: inset 0 0 0 0 rgba(111, 66, 193, 0.4); }
+    50% { box-shadow: inset 0 0 100px 50px rgba(111, 66, 193, 0.1); }
+    100% { box-shadow: inset 0 0 0 0 rgba(111, 66, 193, 0); }
+}

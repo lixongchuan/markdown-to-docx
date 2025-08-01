@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markdown Master - V37 Stable</title>
+    <title>Markdown Master - V38 Stable</title>
     <!-- CDN 依赖无变化 -->
     <script> MathJax = { tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] }, svg: { fontCache: 'global' } }; </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.0.0/dist/markdown-it.min.js" defer></script>
-    <link rel="stylesheet" href="/static/css/style.css?v=37.0">
+    <link rel="stylesheet" href="/static/css/style.css?v=38.0">
 </head>
 <body>
     <header class="header">
         <div class="logo-area">
             <div class="logo" id="logo" data-original-text="Markdown Master">
-                <span id="logo-text">Markdown Master</span> <sup>V37</sup>
+                <span id="logo-text">Markdown Master</span> <sup>V38</sup>
             </div>
         </div>
 
@@ -62,11 +62,11 @@
             <div id="preview-placeholder" class="placeholder">
                 <p>在此实时预览渲染效果</p>
             </div>
-            <!-- V36: 优化广告牌 -->
+            <!-- V38: 优化广告牌内容 -->
             <div id="ad-board" class="ad-board">
                 <div class="ad-content">
-                    <h3>摸鱼时间</h3>
-                    <p>你知道吗？每一次代码提交，都有一个程序员在默默祈祷... <span id="ad-emoji">🙏</span></p>
+                    <h3>开发者冷知识</h3>
+                    <p id="ad-fact">正在加载有趣的事实...</p>
                     <small>（动一动鼠标或键盘，继续您的创作）</small>
                 </div>
             </div>
@@ -83,7 +83,6 @@
         <div class="action-group">
             <button class="btn" id="clear-btn">清空</button>
             <button class="btn btn-primary" id="download-btn">
-                <!-- V37: 为下载按钮图标增加动画结构 -->
                 <span class="btn-icon-wrapper">
                     <svg class="icon-default" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     <svg class="icon-loading" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"></path><path d="M12 18v4"></path><path d="M4.93 4.93l2.83 2.83"></path><path d="M16.24 16.24l2.83 2.83"></path><path d="M2 12h4"></path><path d="M18 12h4"></path><path d="M4.93 19.07l2.83-2.83"></path><path d="M16.24 7.76l2.83-2.83"></path></svg>
@@ -95,6 +94,6 @@
 
     <div id="toast-container"></div>
 
-    <script src="/static/js/script.js?v=37.0"></script>
+    <script src="/static/js/script.js?v=38.0"></script>
 </body>
 </html>
