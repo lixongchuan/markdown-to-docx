@@ -1,3 +1,36 @@
+// script.js (仅展示相关函数，其他部分无需修改)
+
+'use strict';
+
+document.addEventListener('DOMContentLoaded', () => {
+    // ... 其他代码 ...
+
+    // 这个函数已经完美实现了您的要求，无需修改
+    function setupTheme() {
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        applyTheme(savedTheme);
+    }
+
+    function applyTheme(theme) {
+        // body的class切换是触发CSS变化的关键
+        DOM.body.classList.toggle('dark-mode', theme === 'dark'); 
+        DOM.themeIconLight.style.display = theme === 'dark' ? 'none' : 'block';
+        DOM.themeIconDark.style.display = theme === 'dark' ? 'block' : 'none';
+        localStorage.setItem('theme', theme);
+    }
+
+    function handleThemeToggle() {
+        const isDark = DOM.body.classList.toggle('dark-mode');
+        applyTheme(isDark ? 'dark' : 'light');
+
+        const quotes = isDark ? EASTER_EGGS.nightQuotes : EASTER_EGGS.dayQuotes;
+        showToast(quotes[Math.floor(Math.random() * quotes.length)], 'info');
+    }
+
+    // ... 其他代码 ...
+    
+    init();
+});
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -193,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
         applyTheme(savedTheme);
     }
 
-    // --- 5. 核心与彩蛋辅助函数 (全面优化) ---
+    // --- 5. 核心与彩蛋辅助函数 (V38.2 修正 enhanceCodeBlocks) ---
     function setupWelcomeMessage() { // V37: 新增欢迎语函数
         const hour = new Date().getHours();
         let msg = '欢迎使用, ';
@@ -278,13 +311,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // V38.1 修改: 调用新的复制函数
+    const highlightCode = (str, lang) => {
+        const langAttr = lang ? `class="language-${lang}"` : '';
+        return `<pre><code ${langAttr}>${md.utils.escapeHtml(str)}</code></pre>`;
+    };
+
+    // V38.2 核心修正点:
     const enhanceCodeBlocks = () => {
-        DOM.previewOutput.querySelectorAll('pre > code[class*="language-"]').forEach(codeBlock => {
+        // 使用更通用的选择器，查找所有 pre > code 元素
+        DOM.previewOutput.querySelectorAll('pre > code').forEach(codeBlock => {
             const pre = codeBlock.parentElement;
+            // 如果已经有工具栏，则跳过，避免重复渲染
             if (pre.querySelector('.code-toolbar')) return;
+
             const langMatch = codeBlock.className.match(/language-(\w+)/);
+            // 如果没有匹配到语言（例如纯文本块），则默认显示 'text'
             const lang = langMatch ? langMatch[1] : 'text';
+            
             const toolbar = document.createElement('div');
             toolbar.className = 'code-toolbar';
             const langName = document.createElement('span');
@@ -292,16 +335,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const copyBtn = document.createElement('button');
             copyBtn.className = 'copy-btn';
             copyBtn.textContent = '复制';
-            
-            // 绑定事件到我们新的、更强大的复制函数
             copyBtn.addEventListener('click', () => {
                 copyCodeToClipboard(codeBlock.textContent, copyBtn);
             });
-
+            
             toolbar.appendChild(langName);
             toolbar.appendChild(copyBtn);
+
+            // 创建一个 div 将 pre 元素包裹起来，以便放置工具栏
             const wrapper = document.createElement('div');
-            wrapper.className = `language-${lang}`;
+            wrapper.className = `language-${lang}`; // 给包裹层也加上语言类
             pre.parentNode.insertBefore(wrapper, pre);
             wrapper.appendChild(toolbar);
             wrapper.appendChild(pre);
@@ -325,11 +368,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }, duration);
     }
-
-    const highlightCode = (str, lang) => {
-        const langAttr = lang ? `class="language-${lang}"` : '';
-        return `<pre><code ${langAttr}>${md.utils.escapeHtml(str)}</code></pre>`;
-    };
 
     // 重置广告牌计时器
     function resetIdleTimer() {

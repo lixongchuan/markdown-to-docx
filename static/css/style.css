@@ -1,3 +1,5 @@
+/* style.css (V38.1 - 仅展示新增和修改的部分) */
+
 /* --- 全局样式与变量 --- */
 :root {
     --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
@@ -15,6 +17,9 @@
     --c-shadow: rgba(0, 0, 0, 0.1);
     --c-bg-rgb: 255, 255, 255; /* V34: 新增RGB背景变量，用于RGBA透明度 */
     --c-bg-translucent: rgba(246, 248, 250, 0.8); /* V36: 半透明背景变量 */
+    
+    /* V38.1 新增: 为日间模式下的主题图标定义一个温暖的、半透明的径向渐变背景 */
+    --c-theme-icon-light-bg: radial-gradient(circle, rgba(255, 193, 7, 0.5) 0%, rgba(255, 152, 0, 0) 70%); /* 从阳光黄到落日橙的透明光晕 */
 }
 body.dark-mode {
     --c-bg: #0d1117;
@@ -329,8 +334,35 @@ textarea#markdown-input {
 .slider:before { position: absolute; content: ""; height: 12px; width: 12px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
 input:checked + .slider { background-color: var(--c-accent); }
 input:checked + .slider:before { transform: translateX(14px); }
-.theme-toggle { cursor: pointer; background: none; border: none; padding: 5px; color: var(--c-text-subtle); display:flex; align-items:center; justify-content:center; }
-.theme-toggle:hover { color: var(--c-text); }
+
+/* --- V38.1 核心修改点: 美化主题切换按钮 --- */
+.theme-toggle {
+    cursor: pointer;
+    border: none;
+    padding: 8px; /* 稍微增加内边距，让光晕更明显 */
+    color: var(--c-text-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* 将按钮变为圆形，以承载光晕效果 */
+
+    /* 默认应用日间模式的背景（光晕效果）*/
+    background: var(--c-theme-icon-light-bg);
+
+    /* 添加平滑的过渡效果 */
+    transition: background 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.theme-toggle:hover {
+    transform: rotate(30deg) scale(1.1); /* 增强旋转效果 */
+    color: var(--c-text);
+}
+
+/* 当处于暗黑模式时，移除按钮的背景，恢复透明 */
+body.dark-mode .theme-toggle {
+    background: none;
+}
+
 
 /* V38: 更新广告牌样式 - 更醒目 */
 .ad-board {
@@ -471,12 +503,6 @@ input:checked + .slider:before { transform: translateX(14px); }
     background: linear-gradient(135deg, var(--c-bg) 0%, var(--c-bg-alt) 100%);
     border-color: var(--c-accent);
     box-shadow: 0 0 10px rgba(var(--c-accent-rgb), 0.3);
-}
-
-/* 主题切换按钮发光效果 */
-.theme-toggle:hover {
-    transform: rotate(15deg);
-    transition: transform 0.3s ease;
 }
 
 /* 字体滑块发光效果 */
