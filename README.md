@@ -25,3 +25,45 @@ Markdown Master 不仅仅是一个编辑器，它是你写作与排版的得力�
 ```bash
 git clone https://github.com/lixongchuan/markdown-to-docx.git
 cd markdown-to-docx
+```
+
+### 2. 安装依赖
+建议使用 Python 3.8+ 环境。
+```bash
+pip install -r requirements.txt
+```
+
+### 3. 配置 AI 模型 (可选)
+打开 `app.py`，找到 `API_KEY`，填入你的 ModelScope Token（如果需要使用 AI 功能）。
+```python
+API_KEY = "your-modelscope-token-here"
+```
+
+### 4. 运行
+```bash
+python app.py
+```
+访问 `http://127.0.0.1:5000` 开始创作！
+
+## 📂 项目结构
+
+```text
+markdown-master/
+├── app.py                  # Flask 后端入口 (处理路由与 AI 流)
+├── config.py               # 字体与排版配置
+├── services/               # 业务逻辑层 (Word 生成核心)
+├── static/                 # 静态资源
+│   ├── css/                # 模块化样式 (base, layout, chat, themes...)
+│   └── js/                 # 模块化脚本 (editor, ui, chat...)
+└── templates/
+    └── index.html          # 前端入口
+```
+
+## 👨‍💻 作者
+
+**LXC**
+- 📧 Email: lixongchuan@outlook.com
+- 🐱 GitHub: [@lixongchuan](https://github.com/lixongchuan)
+
+---
+*“代码是写给人看的，顺便给机器运行。”*
