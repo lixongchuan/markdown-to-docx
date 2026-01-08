@@ -1,0 +1,157 @@
+/* 悬浮聊天按钮 */
+.chat-trigger-btn {
+    position: fixed;
+    /* 修改默认位置：离底部远一点，离右边也稍微远一点 */
+    bottom: 100px; 
+    right: 30px; 
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--c-accent);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    cursor: pointer; /* 默认是指针 */
+    z-index: 1500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s; /* 拖拽时取消平滑过渡，手感更好 */
+    user-select: none;
+    touch-action: none; /* 防止移动端滚动 */
+}
+
+/* 拖拽状态样式 */
+.chat-trigger-btn.dragging {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    cursor: move;
+}
+.chat-trigger-btn:hover { transform: scale(1.1); }
+
+/* 聊天窗口容器 */
+.chat-window {
+    position: fixed;
+    width: 380px;
+    height: 550px;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    z-index: 1600;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    
+    /* 初始隐藏状态 */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+    
+    /* 默认位置 (可以通过 JS 覆盖) */
+    bottom: 80px;
+    right: 20px;
+}
+
+.chat-window.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* 顶部拖拽栏 */
+.chat-header {
+    padding: 12px 16px;
+    background: var(--c-bg-alt);
+    border-bottom: 1px solid var(--c-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: move; /* 关键：显示可拖拽光标 */
+    user-select: none;
+}
+.chat-title { font-weight: 600; font-size: 14px; color: var(--c-text); display: flex; align-items: center; gap: 8px; }
+.chat-close-btn { background: none; border: none; cursor: pointer; color: var(--c-text-subtle); padding: 4px; }
+.chat-close-btn:hover { color: #dc3545; }
+
+/* 消息区域 */
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: var(--c-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 消息气泡 */
+.message {
+    max-width: 85%;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+.message.user {
+    align-self: flex-end;
+    background: var(--c-accent);
+    color: white;
+    border-bottom-right-radius: 2px;
+}
+.message.ai {
+    align-self: flex-start;
+    background: var(--c-bg-alt);
+    color: var(--c-text);
+    border: 1px solid var(--c-border);
+    border-bottom-left-radius: 2px;
+}
+
+/* AI 回复中的 Markdown 样式修正 */
+.message.ai pre { background: var(--c-code-bg); padding: 8px; border-radius: 4px; overflow-x: auto; margin: 5px 0; }
+.message.ai code { font-family: var(--font-mono); font-size: 12px; }
+.message.ai p { margin: 0 0 8px 0; }
+.message.ai p:last-child { margin: 0; }
+
+/* 底部输入框 */
+.chat-input-area {
+    padding: 12px;
+    border-top: 1px solid var(--c-border);
+    background: var(--c-bg);
+    display: flex;
+    gap: 8px;
+}
+.chat-input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--c-border);
+    background: var(--c-bg-alt);
+    color: var(--c-text);
+    outline: none;
+    font-size: 14px;
+    resize: none;
+    height: 36px; /* 单行高度 */
+    max-height: 100px;
+}
+.chat-input:focus { border-color: var(--c-accent); background: var(--c-bg); }
+.chat-send-btn {
+    background: var(--c-accent);
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+}
+.chat-send-btn:hover { background: var(--c-accent-hover); }
+.chat-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* 加载动画 */
+.typing-indicator { font-size: 12px; color: var(--c-text-subtle); margin-left: 4px; display: none; }
+.typing-indicator.active { display: inline-block; animation: blink 1s infinite; }
+@keyframes blink { 50% { opacity: 0; } }

@@ -1,0 +1,126 @@
+/* 遮罩层 */
+.sidebar-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(2px);
+    z-index: 2999;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+.sidebar-overlay.visible { opacity: 1; visibility: visible; }
+
+/* 侧边栏主体 */
+.sidebar {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: 360px;
+    background: var(--c-bg); /* 跟随主题色 */
+    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+    z-index: 3000;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex; flex-direction: column;
+    border-left: 1px solid var(--c-border);
+}
+.sidebar.visible { transform: translateX(0); }
+
+/* 头部 */
+.sidebar-header {
+    padding: 24px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.sidebar-header h2 {
+    margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.5px;
+    background: linear-gradient(120deg, var(--c-text), var(--c-text-subtle));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+/* 内容区 */
+.sidebar-content {
+    flex: 1; overflow-y: auto; padding: 0 32px 32px;
+}
+
+/* 介绍文字 */
+.intro-text {
+    font-size: 15px; line-height: 1.8; color: var(--c-text-subtle);
+    font-style: italic; margin-bottom: 20px;
+}
+
+.divider { border: 0; height: 1px; background: var(--c-border); margin: 20px 0; }
+
+/* 功能区块 */
+.feature-section h3 {
+    font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--c-text); opacity: 0.5; margin-bottom: 16px;
+}
+.feature-section p {
+    font-size: 14px; line-height: 1.6; color: var(--c-text); margin-bottom: 24px;
+}
+
+/* 彩蛋列表 */
+.egg-list {
+    list-style: none; padding: 0; margin: 0 0 24px;
+}
+.egg-list li {
+    margin-bottom: 16px; padding-left: 12px;
+    border-left: 2px solid var(--c-border);
+    transition: border-color 0.2s;
+}
+.egg-list li:hover { border-left-color: var(--c-accent); }
+.egg-list .key {
+    display: block; font-weight: 600; font-size: 14px; color: var(--c-text);
+    margin-bottom: 4px;
+}
+.egg-list .desc {
+    display: block; font-size: 13px; color: var(--c-text-subtle); line-height: 1.4;
+}
+
+/* 作者卡片 */
+.author-card {
+    background: var(--c-bg-alt);
+    border-radius: 12px; padding: 20px;
+    display: flex; align-items: center; gap: 16px;
+    margin-top: 20px; border: 1px solid var(--c-border);
+}
+.author-avatar {
+    width: 52px; 
+    height: 52px; 
+    border-radius: 50%;
+    object-fit: cover; /* 防止图片变形 */
+    border: 2px solid var(--c-bg); /* 给头像加个边框，更有层次感 */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+/* 鼠标悬停头像微微旋转放大，增加趣味性 */
+.author-card:hover .author-avatar {
+    transform: scale(1.05) rotate(5deg);
+}
+
+/* 稍微优化一下 Qwen 那段文字的间距 */
+.feature-section p {
+    margin-bottom: 20px; /* 增加一点呼吸感 */
+}
+.author-info { flex: 1; display: flex; flex-direction: column; }
+.author-info strong { font-size: 16px; color: var(--c-text); }
+.author-info span { font-size: 12px; color: var(--c-text-subtle); margin-top: 2px; }
+
+.contact-links { display: flex; gap: 10px; }
+.link-item {
+    color: var(--c-text-subtle); transition: color 0.2s, transform 0.2s;
+}
+.link-item:hover { color: var(--c-accent); transform: translateY(-2px); }
+
+.sidebar-footer {
+    text-align: center; font-size: 12px; color: var(--c-text-subtle); opacity: 0.5;
+    margin-top: 20px;
+}
+
+/* 按钮微调 */
+.icon-btn {
+    background: none; border: none; cursor: pointer; color: var(--c-text-subtle);
+    padding: 6px; border-radius: 6px; transition: all 0.2s;
+}
+.icon-btn:hover { background: var(--c-bg-alt); color: var(--c-text); }

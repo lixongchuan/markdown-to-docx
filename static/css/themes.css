@@ -1,0 +1,57 @@
+/* --- 深色模式变量 --- */
+body.dark-mode {
+    --c-bg: #0d1117;
+    --c-bg-alt: #161b22;
+    --c-border: #30363d;
+    --c-text: #c9d1d9;
+    --c-text-subtle: #8b949e;
+    --c-accent: #58a6ff;
+    --c-accent-hover: #79b8ff;
+    --c-code-bg: #161b22;
+    --c-code-toolbar: #30363d;
+    --c-shadow: rgba(255, 255, 255, 0.1);
+    --c-bg-rgb: 13, 17, 23;
+    --c-bg-translucent: rgba(22, 27, 34, 0.8);
+}
+
+/* 深色模式下的组件特定覆盖 */
+body.dark-mode .theme-toggle { background: none; }
+body.dark-mode .settings-modal {
+    background: #1c2128;
+    box-shadow: 0 20px 50px -10px rgba(0,0,0,0.5);
+}
+body.dark-mode .tab-btn:hover { background: rgba(255,255,255,0.05); }
+body.dark-mode .tab-btn.active { background: #2d333b; color: var(--c-accent); }
+body.dark-mode .page-inner { background: #2d333b; }
+body.dark-mode .margin-input input { background: #2d333b; border-color: var(--c-border); }
+
+/* --- 像素模式彩蛋 --- */
+body.pixel-mode {
+    font-family: 'Press Start 2P', cursive !important;
+    --editor-font-size: 12px;
+}
+body.pixel-mode .pane,
+body.pixel-mode textarea,
+body.pixel-mode .preview-pane,
+body.pixel-mode .btn,
+body.pixel-mode .toast,
+body.pixel-mode .ad-content {
+    font-family: 'Press Start 2P', cursive !important;
+    line-height: 1.5;
+}
+body.pixel-mode .logo { font-size: 18px; }
+body.pixel-mode #font-size-display { font-size: 11px; }
+
+/* --- 独角兽模式彩蛋 --- */
+body.unicorn-mode {
+    background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+    color: #5d2a42;
+}
+body.unicorn-mode .header,
+body.unicorn-mode .action-bar,
+body.unicorn-mode .pane {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+body.unicorn-mode textarea, body.unicorn-mode .preview-pane {
+    color: #2c0b1e;
+}

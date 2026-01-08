@@ -1,0 +1,71 @@
+/* --- 顶部 Header --- */
+.header {
+    padding: 6px 16px;
+    background: var(--c-bg);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--c-border);
+    transition: background-color 0.3s, border-color 0.3s;
+    position: relative;
+    z-index: 10;
+}
+.logo-area, .controls { display: flex; align-items: center; }
+.logo { font-size: 20px; font-weight: 600; cursor: pointer; transition: transform 0.3s ease; }
+.logo sup { font-size: 10px; opacity: 0.7; }
+
+/* --- 底部 Action Bar --- */
+.action-bar {
+    padding: 8px 16px;
+    border-top: 1px solid var(--c-border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+    background: var(--c-bg);
+}
+.action-group { display: flex; align-items: center; gap: 10px; }
+
+/* --- 主体双栏布局 --- */
+.main-container { display: flex; flex: 1; overflow: hidden; user-select: none; position: relative; }
+.pane {
+    padding: 25px; overflow-y: auto; box-sizing: border-box; background: var(--c-bg);
+    transition: background-color 0.3s; height: 100%; width: 50%;
+    position: relative;
+}
+.editor-pane { user-select: text; }
+
+/* 编辑器 TextArea */
+textarea#markdown-input, .preview-pane { font-size: var(--editor-font-size); }
+textarea#markdown-input {
+    width: 100%; height: 100%; border: none; resize: none; outline: none;
+    line-height: 1.7; font-family: var(--font-mono); background: transparent; color: var(--c-text);
+}
+.placeholder { color: var(--c-text-subtle); text-align: center; margin-top: 40px; font-size: 16px; user-select: none; }
+.error-msg { color: #dc3545; font-weight: bold; }
+
+/* --- 拖拽手柄 --- */
+#resizer {
+    width: 5px; background: var(--c-border); cursor: col-resize;
+    flex-shrink: 0; transition: background-color 0.2s;
+}
+#resizer:hover, #resizer.active { background: var(--c-accent); }
+
+/* --- 预览区域与 Markdown 样式 --- */
+.preview-pane { line-height: 1.7; user-select: text; }
+.preview-pane h1, .preview-pane h2, .preview-pane h3 { border-bottom: 1px solid var(--c-border); padding-bottom: .3em; margin-top: 24px; margin-bottom: 16px; }
+.preview-pane table { border-collapse: collapse; margin: 1em 0; display: block; overflow: auto; width: 100%; }
+.preview-pane th, .preview-pane td { border: 1px solid var(--c-border); padding: 8px 15px; }
+.preview-pane tr:nth-child(2n) { background-color: var(--c-bg-alt); }
+.preview-pane img { max-width: 100%; height: auto; border-radius: 6px; }
+.preview-pane code { font-family: var(--font-mono); }
+
+/* 代码块高亮样式 */
+.preview-pane div[class*="language-"] { position: relative; background-color: var(--c-code-bg); border: 1px solid var(--c-border); border-radius: 6px; margin: 1.5em 0; }
+.preview-pane pre { margin: 0; padding: 16px; padding-top: 45px; overflow-x: auto; }
+.code-toolbar { position: absolute; top: 0; left: 0; right: 0; height: 35px; background: var(--c-code-toolbar); border-bottom: 1px solid var(--c-border); display: flex; align-items: center; justify-content: space-between; padding: 0 10px; font-size: 12px; color: var(--c-text-subtle); border-top-left-radius: 5px; border-top-right-radius: 5px; }
+.copy-btn { background: none; border: 1px solid transparent; color: var(--c-text-subtle); cursor: pointer; padding: 4px 8px; border-radius: 4px; font-size: 12px; transition: all 0.2s; }
+.copy-btn:hover { background-color: var(--c-bg); border-color: var(--c-border); }
+.copy-btn.copied { color: #28a745; border-color: #28a745; }

@@ -1,0 +1,123 @@
+/* --- 全局样式与变量 --- */
+:root {
+    --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    --c-bg: #ffffff;
+    --c-bg-alt: #f6f8fa;
+    --c-border: #e1e4e8;
+    --c-text: #24292e;
+    --c-text-subtle: #586069;
+    --c-accent: #0366d6;
+    --c-accent-hover: #005cc5;
+    --c-code-bg: #f6f8fa;
+    --c-code-toolbar: #e1e4e8;
+    --editor-font-size: 16px;
+    --c-shadow: rgba(0, 0, 0, 0.1);
+    --c-bg-rgb: 255, 255, 255; 
+    --c-bg-translucent: rgba(246, 248, 250, 0.8); 
+    --c-theme-icon-light-bg: radial-gradient(circle, rgba(255, 193, 7, 0.5) 0%, rgba(255, 152, 0, 0) 70%);
+}
+
+/* 像素字体引入 */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--c-bg-alt);
+    color: var(--c-text);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* 打印样式 (全局重置) */
+/* --- 打印样式 --- */
+@media print {
+    /* 1. 隐藏无关元素 */
+    .header, .action-bar, #resizer, .editor-pane, 
+    .login-modal, .login-overlay, #toast-container, 
+    .theme-toggle, .welcome-message, .settings-modal, 
+    #settings-overlay, .poetry-container, #ad-board {
+        display: none !important;
+    }
+
+    /* 2. 设置页面物理边距  */
+    @page {
+        margin: 2.54cm 1.9cm; /* 上下2.54cm，左右1.9cm (标准 Word 默认边距) */
+        size: A4;
+    }
+
+    /* 3. 重置容器样式 */
+    body, .main-container {
+        display: block !important;
+        height: auto !important;
+        overflow: visible !important;
+        background: white !important;
+        margin: 0 !important;
+    }
+
+    .pane.preview-pane {
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        margin: 0 !important;
+        padding: 0 !important; /* 去掉之前的 2cm padding，交给 @page 控制 */
+        border: none !important;
+        position: static !important;
+    }
+
+    /* 4. 修复标题顶部间距过大问题 */
+    .preview-pane > *:first-child {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    
+    /* 5. 修复分页切割问题 (允许跨页断行，填补空白) */
+    p, li, blockquote, pre {
+        orphans: 2; /* 页面底部最少留 2 行 */
+        widows: 2;  /* 页面顶部最少留 2 行 */
+        break-inside: auto !important; /* 允许内容内部断开 */
+        page-break-inside: auto !important; /* 兼容旧浏览器 */
+    }
+
+    ul, ol {
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+    }
+
+    /* 标题不要单独留在页面底部 */
+    h1, h2, h3, h4, h5, h6 {
+        break-after: avoid !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+        margin-top: 1.5em; /* 打印时标题间距稍微大一点更好看，除了第一个 */
+    }
+    
+    /* 针对第一个标题再次强制去除间距 */
+    h1:first-child, h2:first-child, h3:first-child {
+        margin-top: 0 !important;
+    }
+
+    /* 6. 表格样式优化 */
+    table {
+        break-inside: auto;
+    }
+    tr {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    /* 7. 字体颜色强制纯黑  */
+    * {
+        color: #000 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        text-shadow: none !important;
+        box-shadow: none !important;
+    }
+    
+    a { text-decoration: none !important; color: #000 !important; }
+}
